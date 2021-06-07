@@ -1,0 +1,206 @@
+﻿<!DOCTYPE html>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+     KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="format-detection" content="telephone=no" />
+        <meta name="msapplication-tap-highlight" content="no" />
+        <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
+        <meta name="viewport" content="width=device-width, height=device-height, user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, target-densitydpi=device-dpi" />
+
+        <link href="css/themes/2/bookit.min.css" rel="stylesheet" />
+        <link href="css/themes/2/jquery.mobile.icons.min.css" rel="stylesheet" />
+        <link href="lib/jqm/1.4.5/jquery.mobile.structure-1.4.5.min.css" rel="stylesheet" />
+        <link rel="stylesheet" type="text/css" href="css/app.css" />
+        <link rel="shortcut icon" href="#" />
+        <title>IISWEB System</title>
+
+
+        <style>
+            #confirm {
+                display: none;
+                background-color: #f2f4ef;
+                border: 1px solid #aaa;
+                position: relative;
+                width: 250px;
+                height: 150px;
+                top: 20%;
+                left: 50%;
+                margin-left: -100px;
+                padding: 8px;
+                box-sizing: border-box;
+                text-align: center;
+            }
+            #confirm button {
+                background-color: #3388cc;
+                display: inline-block;
+                border-radius: 5px;
+                border: 1px solid #aaa;
+                padding: 5px;
+                text-align: center;
+                width: 80px;
+                cursor: pointer;
+                margin-top: 20px;
+            }
+            #confirm .message {
+                text-align: left;
+            }
+
+            #alertconfirm {
+                display: none;
+                background-color: #f2f4ef;
+                border: 1px solid #aaa;
+                position: relative;
+                width: 250px;
+                height: 150px;
+                top: 20%;
+                left: 50%;
+                margin-left: -100px;
+                padding: 8px;
+                box-sizing: border-box;
+                text-align: center;
+            }
+
+            #alertconfirm button {
+                background-color: #3388cc;
+                display: inline-block;
+                border-radius: 5px;
+                border: 1px solid #aaa;
+                padding: 5px;
+                text-align: center;
+                width: 80px;
+                cursor: pointer;
+                margin-top: 20px;
+            }
+            #alertconfirm .message {
+                text-align: left;
+            }
+        </style>        
+
+    </head>
+    <!--
+    https://demos.jquerymobile.com/1.3.2/widgets/listviews/index.html#&ui-state=dialog
+    -->
+    <body>
+        <style>
+            .block {
+                display: block;
+                width: 10%;
+                border: none;
+                background-color: #4CAF50;
+                padding: 14px 28px;
+                font-size: 16px;
+                cursor: pointer;
+                text-align: center;
+            }
+
+            .ui-icon-myicongraph:after{
+                background-image:url("images/graph.jpg");
+                /* Make your icon fit */
+                background-size:18px 18px;
+            }
+            .ui-icon-myicontable:after{
+                background-image:url("images/table.png");
+                /* Make your icon fit */
+                background-size:18px 18px;
+            }     
+            .ui-icon-myiconbuy:after{
+                background-image:url("images/buy.jpg");
+                /* Make your icon fit */
+                background-size:18px 18px;
+            }  
+            .ui-icon-myiconsell:after{
+                background-image:url("images/sell.jpg");
+                /* Make your icon fit */
+                background-size:18px 18px;
+            }            
+            .ui-icon-myiconexit:after{
+                background-image:url("images/exit.png");
+                /* Make your icon fit */
+                background-size:18px 18px;
+            }   
+        </style>        
+        <div data-role="page" id="page-index">
+            <div data-role="header" data-theme="c" data-position="fixed">
+                <a href="accountsttr_1.html" data-icon="back" data-iconpos="notext" ui-btn-icon-Left data-transition="slide" data-direction="reverse"></a>
+                <!--                <div class="ui-icon-alt"> Class added to the wrapper 
+                                    <a href="accountst_1.html"  data-role="button" data-icon="back"  data-icon="back" data-iconpos="notext" data-theme="c" data-inline="true"></a>
+                                    <a href="index.html" rel="external" data-role="button" data-icon="home" data-iconpos="notext" data-theme="c" data-inline="true"></a>
+                                    <a href="accountsttr_1.html" data-role="button" data-icon="recycle" data-iconpos="notext" data-theme="c" data-inline="true"></a>
+                                </div>-->
+                <h1>IISWEB System</h1>
+            </div><!-- /header -->
+            <h2 id="accheader" class="mc-text-center">Account</h2>
+            <p></p>
+            <div data-role="content" id="textcontent">
+
+                <!--<ul id="myid" data-role="listview" data-theme="d" data-divider-theme="d">-->                    
+                <ul id="myid" data-role="listview" data-theme="d" data-divider-theme="d">
+                    <li id="0">Trading Model Listing</li>
+                </ul>                
+
+            </div>
+        </div>
+
+        <div id="confirm">
+            <div class="message"></div>
+            <button class="yes">Yes</button>
+            <button class="no">No</button>          
+        </div>      
+
+        <div id="alertconfirm">
+            <div class="message"></div>
+            <button class="ok">OK</button>            
+        </div> 
+
+        <div data-role="page" id="page-intro">
+            <div class="bi-header" data-role="header" data-theme="c" data-position="fixed">
+                <a href="#page-index" data-icon="back" data-iconpos="notext" data-transition="slide" data-direction="reverse"></a>
+                <h1>IISWEB System</h1>
+            </div><!-- /header -->
+            <div role="main" class="ui-content">
+                <h2 class="mc-text-center">Help Info</h2>
+                <p class="mc-top-margin-1-5">You can review the trading strategy. 
+                    The system provides the TR_NN1 and TR_NN2 Auto AI trading strategies to help you making the trading decision.
+                    You can also configure your account to do manual trading by yourself without auto AI support.</p>
+                <p class="mc-top-margin-1-5">The ACCOUNT model is the normal trading transaction that can only support buy and sell. </p>
+
+                <p class="mc-top-margin-1-5">The TR_NN1 and TR NN2 Neural Network models are using Neural Network AI to predict the best trading signal. The AI models are calculating 
+                    the performance on both short selling or buying long transaction so that the result can cover price drop prediction.
+                </p>
+
+                <br>                
+                <p class="mc-top-margin-1-5">Features:</p>
+                <ul>
+                    <li>ACCOUNT - Customer trading account</li>
+                    <li>TR_NN1 - Auto AI trading strategy based on MACD signal for the neural network learning</li>                      
+                    <li>TR_NN2 - Auto AI trading strategy based on EMA signal for the neural network learning</li>                      
+                    <li>Configuration - configure the customer account to use manual trading or auto AI trading</li>                    
+                </ul> 
+                <p></p>
+            </div><!-- /content -->
+        </div><!-- /page -->         
+
+        <script src="lib/jquery/2.1.1/jquery-2.1.1.min.js"></script>
+        <script src="lib/jqm/1.4.5/jquery.mobile-1.4.5.min.js"></script>    
+        <script type="text/javascript" src="js/iisweb.js"></script>            
+        <script type="text/javascript" src="js/iiswebaccountsttrmsg.js"></script>          
+    </body>
+</html>

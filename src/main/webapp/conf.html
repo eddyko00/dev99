@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+     KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="format-detection" content="telephone=no" />
+        <meta name="msapplication-tap-highlight" content="no" />
+        <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
+        <meta name="viewport" content="width=device-width, height=device-height, user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, target-densitydpi=device-dpi" />
+
+        <link href="css/themes/2/bookit.min.css" rel="stylesheet" />
+        <link href="css/themes/2/jquery.mobile.icons.min.css" rel="stylesheet" />
+        <link href="lib/jqm/1.4.5/jquery.mobile.structure-1.4.5.min.css" rel="stylesheet" />
+        <link rel="stylesheet" type="text/css" href="css/app.css" />
+        <link rel="shortcut icon" href="#" />
+        <title>IISWEB System</title>
+
+        <style>
+            #confirm {
+                display: none;
+                background-color: #f2f4ef;
+                border: 1px solid #aaa;
+                position: relative;
+                width: 250px;
+                height: 150px;
+                top: 20%;
+                left: 50%;
+                margin-left: -100px;
+                padding: 8px;
+                box-sizing: border-box;
+                text-align: center;
+            }
+            #confirm button {
+                background-color: #3388cc;
+                display: inline-block;
+                border-radius: 5px;
+                border: 1px solid #aaa;
+                padding: 5px;
+                text-align: center;
+                width: 80px;
+                cursor: pointer;
+                margin-top: 20px;
+            }
+            #confirm .message {
+                text-align: left;
+            }
+
+            #alertconfirm {
+                display: none;
+                background-color: #f2f4ef;
+                border: 1px solid #aaa;
+                position: relative;
+                width: 250px;
+                height: 150px;
+                top: 20%;
+                left: 50%;
+                margin-left: -100px;
+                padding: 8px;
+                box-sizing: border-box;
+                text-align: center;
+            }
+
+            #alertconfirm button {
+                background-color: #3388cc;
+                display: inline-block;
+                border-radius: 5px;
+                border: 1px solid #aaa;
+                padding: 5px;
+                text-align: center;
+                width: 80px;
+                cursor: pointer;
+                margin-top: 20px;
+            }
+            #alertconfirm .message {
+                text-align: left;
+            }
+        </style>        
+
+
+    </head>
+    <body>
+        <div data-role="page" id="page-index">
+            <div data-role="header" data-theme="c" data-position="fixed">
+                <!--https://demos.jquerymobile.com/1.4.5/navigation-linking-pages/   rel="external"-->
+                <a href="account_1.html" data-icon="back" ui-btn-icon-Left data-iconpos="notext" data-transition="slide" data-direction="reverse"></a>
+                <!--<a href="#page-msg" rel="external" data-icon="mail" data-iconpos="notext" data-transition="slide" data-direction="reverse" data-inline="true"></a>-->
+
+                <h1>IISWEB System</h1>
+            </div><!-- /header -->
+            <div role="main" class="ui-content">
+
+                <h3>Update Customer Info</h3>
+                <div id="ctn-err" class="bi-invisible"></div>
+                <label for="txt-first-name">First Name</label>
+                <input type="text" name="txt-first-name" id="txt-first-name" value="">
+                <label for="txt-last-name">Last Name</label>
+                <input type="text" name="txt-last-name" id="txt-last-name" value="">
+                <label for="txt-email-address">Email Address</label>
+                <input type="text" name="txt-email-address" id="txt-email-address" value="">
+                <label for="txt-password">Password</label>
+                <input type="password" name="txt-password" id="txt-password" value="" placeholder="*****">
+
+                <label for="txt-first-name">Current Plan</label>
+                <input type="text" name="txt-cur-plan" id="txt-cur-plan" value="" readonly>
+                <br>
+                <label for="pricemodel">Note that changing the plan will be effective in the next bill cycle. </label>
+                <select id="pricemodel">
+                    <option value="-1"> No price plan change.</option>                       
+                    <option value="0"> $30 - Basic Price plan for max 2 stocks.</option>                    
+                    <option value="10"> $60 - Standard Price plan for max 8 stocks.</option>
+                    <option value="20"> $120 - Premium Price plan for max 20 stocks.</option>
+                    <option value="40"> $240 - Deluxe Price plan for max 40 stocks.</option>                    
+                </select>
+                <P></P> 
+                <font color="red">
+                <div id="error_message-signup" class="ajax_response" style="float:left"></div>   
+                </font>
+                <button id="btn-submit" class="ui-btn ui-btn-b ui-corner-all mc-top-margin-1-5">Submit</button>
+            </div><!-- /content -->
+
+        </div><!-- /page -->
+
+        <div id="confirm">
+            <div class="message"></div>
+            <button class="yes">Yes</button>
+            <button class="no">No</button>          
+        </div>      
+
+        <div id="alertconfirm">
+            <div class="message"></div>
+            <button class="ok">OK</button>            
+        </div>           
+
+        <script src="lib/jquery/2.1.1/jquery-2.1.1.min.js"></script>
+        <script src="lib/jqm/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+        <script type="text/javascript" src="js/iisweb.js"></script>          
+        <script type="text/javascript" src="js/iiswebcon.js"></script>          
+    </body>
+</html>

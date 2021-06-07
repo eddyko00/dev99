@@ -1,0 +1,207 @@
+﻿<!DOCTYPE html>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+     KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="format-detection" content="telephone=no" />
+        <meta name="msapplication-tap-highlight" content="no" />
+        <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
+        <meta name="viewport" content="width=device-width, height=device-height, user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, target-densitydpi=device-dpi" />
+
+        <link href="css/themes/2/bookit.min.css" rel="stylesheet" />
+        <link href="css/themes/2/jquery.mobile.icons.min.css" rel="stylesheet" />
+        <link href="lib/jqm/1.4.5/jquery.mobile.structure-1.4.5.min.css" rel="stylesheet" />
+        <link rel="stylesheet" type="text/css" href="css/app.css" />
+        <link rel="shortcut icon" href="#" />
+        <title>IISWEB System</title>
+
+        <style>
+            #confirm {
+                display: none;
+                background-color: #f2f4ef;
+                border: 1px solid #aaa;
+                position: relative;
+                width: 250px;
+                height: 150px;
+                top: 20%;
+                left: 50%;
+                margin-left: -100px;
+                padding: 8px;
+                box-sizing: border-box;
+                text-align: center;
+            }
+            #confirm button {
+                background-color: #3388cc;
+                display: inline-block;
+                border-radius: 5px;
+                border: 1px solid #aaa;
+                padding: 5px;
+                text-align: center;
+                width: 80px;
+                cursor: pointer;
+                margin-top: 20px;
+            }
+            #confirm .message {
+                text-align: left;
+            }
+
+            #alertconfirm {
+                display: none;
+                background-color: #f2f4ef;
+                border: 1px solid #aaa;
+                position: relative;
+                width: 250px;
+                height: 150px;
+                top: 20%;
+                left: 50%;
+                margin-left: -100px;
+                padding: 8px;
+                box-sizing: border-box;
+                text-align: center;
+            }
+
+            #alertconfirm button {
+                background-color: #3388cc;
+                display: inline-block;
+                border-radius: 5px;
+                border: 1px solid #aaa;
+                padding: 5px;
+                text-align: center;
+                width: 80px;
+                cursor: pointer;
+                margin-top: 20px;
+            }
+            #alertconfirm .message {
+                text-align: left;
+            }
+        </style>        
+
+    </head>
+    <!--
+    https://demos.jquerymobile.com/1.3.2/widgets/listviews/index.html#&ui-state=dialog
+    -->
+    <body>
+        <div data-role="page" id="page-index">
+            <div id="msgheader" data-role="header" data-theme="c" data-position="fixed" >
+                <!--https://demos.jquerymobile.com/1.4.5/navigation-linking-pages/   rel="external"-->
+                <a href="index.html" rel="external" data-icon="back" data-iconpos="notext" data-transition="slide" data-direction="reverse" data-inline="true"></a>
+
+                <a href="#page-msg"  rel="external" data-icon="mail" data-iconpos="notext" data-transition="slide" data-direction="reverse" data-inline="true"></a>
+
+                <h1>IISWEB System</h1>
+            </div><!-- /header -->
+            <div id="nomsgheader" data-role="header" data-theme="c" data-position="fixed" >
+                <!--https://demos.jquerymobile.com/1.4.5/navigation-linking-pages/   rel="external"-->
+                <a href="index.html" rel="external" data-icon="back" data-iconpos="notext" data-transition="slide" data-direction="reverse" data-inline="true"></a>
+
+                <h1>IISWEB System</h1>
+            </div><!-- /header -->
+
+            <h2 id="accheader" class="mc-text-center">Account</h2>
+            <p></p>
+            <div data-role="content" id="textcontent">
+
+                <!--<ul id="myid" data-role="listview" data-theme="d" data-divider-theme="d">-->                    
+                <ul id="myid" data-role="listview" data-theme="d" data-divider-theme="d">
+                    <li id="0">Account Listing</li>
+                </ul> 
+
+                <p><br></p> 
+                <p><br></p> 
+                <!--                
+                <a href="#page-server" class="ui-btn ui-btn-b ui-corner-all">server</a>
+                <a href="#page-lock" class="ui-btn ui-btn-b ui-corner-all">lock</a>
+                -->
+                <p id="adminid"></p>
+            </div>
+        </div>
+
+
+        <div data-role="page" id="page-msg">
+            <div data-role="header" data-theme="c" data-position="fixed">
+                <a href="#page-index" data-icon="back" data-iconpos="notext" data-transition="slide" data-direction="reverse"></a>
+
+                <h1>IISWEB System</h1>
+            </div><!-- /header -->                    
+            <div data-role="content" id="textcontent">
+                <ul id="msgid" data-role="listview" data-theme="d" data-divider-theme="d">
+                </ul> 
+            </div>    
+            <button id="clrbtn"  >Clear Message</button>
+        </div>   
+
+
+        <div data-role="page" id="page-admmsg">
+            <div data-role="header" data-theme="c" data-position="fixed">
+                <a href="#page-index" data-icon="back" data-iconpos="notext" data-transition="slide" data-direction="reverse"></a>
+
+                <h1>IISWEB System</h1>
+            </div><!-- /header -->                    
+            <div data-role="content" id="textcontent">
+                <ul id="admmsgid" data-role="listview" data-theme="d" data-divider-theme="d">
+                </ul> 
+            </div>    
+            <button id="admclrbtn"  >Clear Message</button>
+        </div>   
+
+        <div id="confirm">
+            <div class="message"></div>
+            <button class="yes">Yes</button>
+            <button class="no">No</button>          
+        </div>      
+
+        <div id="alertconfirm">
+            <div class="message"></div>
+            <button class="ok">OK</button>            
+        </div>            
+
+        <div data-role="page" id="page-intro">
+            <div class="bi-header" data-role="header" data-theme="c" data-position="fixed">
+                <a href="#page-index" data-icon="back" data-iconpos="notext" data-transition="slide" data-direction="reverse"></a>
+                <h1>IISWEB System</h1>
+            </div><!-- /header -->
+            <div role="main" class="ui-content">
+                <h2 class="mc-text-center">Help Info</h2>
+                <p class="mc-top-margin-1-5">You can update account information or view the billing invoice.
+                    You can review the system messages from the message icon on the top if there are messages. It will notify you if the 
+                    Buy or Sell transaction signal for the stock has changed.
+                </p>
+                <p class="mc-top-margin-1-5">Features:</p>
+                <ul>
+                    <li>View My Stock List - display my current added stock list</li>
+                    <li>Configuration - update email, password or change plan</li>
+                    <li>Billing Invoice - show the past bill invoices</li> 
+                    <li>View Fund Mgr Subscription - show best fund manager portfolio</li> 
+                </ul> 
+                <p><p>
+                <p class="mc-top-margin-1-5">If you have a Mutual Fund Portfolio account,
+                    the system will select 4 best stocks automatically 
+                    from the trading account based on the portfolio balance calculation.
+                    This will represent your investment portfolio in total amount.</p>                     
+                </p>
+            </div><!-- /content -->
+        </div><!-- /page -->  
+
+        <script src="lib/jquery/2.1.1/jquery-2.1.1.min.js"></script>
+        <script src="lib/jqm/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+        <script type="text/javascript" src="js/iisweb.js"></script>            
+        <script type="text/javascript" src="js/iiswebaccount.js"></script>          
+    </body>
+</html>

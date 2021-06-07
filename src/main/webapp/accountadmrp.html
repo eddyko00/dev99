@@ -1,0 +1,168 @@
+﻿<!DOCTYPE html>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+     KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="format-detection" content="telephone=no" />
+        <meta name="msapplication-tap-highlight" content="no" />
+        <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
+        <meta name="viewport" content="width=device-width, height=device-height, user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, target-densitydpi=device-dpi" />
+
+        <link href="css/themes/2/bookit.min.css" rel="stylesheet" />
+        <link href="css/themes/2/jquery.mobile.icons.min.css" rel="stylesheet" />
+        <link href="lib/jqm/1.4.5/jquery.mobile.structure-1.4.5.min.css" rel="stylesheet" />
+        <link rel="stylesheet" type="text/css" href="css/app.css" />
+        <link rel="shortcut icon" href="#" />
+        <title>IISWEB System</title>
+    </head>
+    <!--
+    https://demos.jquerymobile.com/1.3.2/widgets/listviews/index.html#&ui-state=dialog
+    -->
+    <body>
+        <style>
+            .ui-popup-container {
+                height: 70vh;
+                width: 70vw;
+            }
+        </style>           
+        <div data-role="page" id="page-index">
+            <div data-role="header" data-theme="c" data-position="fixed">
+                <!--https://demos.jquerymobile.com/1.4.5/navigation-linking-pages/   rel="external"-->
+                <a href="account_1.html" data-icon="back" ui-btn-icon-Left data-iconpos="notext" data-transition="slide" data-direction="reverse"></a>
+                <a href="accountadmrp_1.html" data-icon="recycle" ui-btn-icon-Right data-iconpos="notext" data-transition="slide" data-direction="reverse"></a>
+
+                <h1>IISWEB System</h1>
+            </div><!-- /header -->
+
+            <h2 id="accheader" class="mc-text-center">Accounting Report</h2>
+            <p></p>
+            <div id="tabheader" data-role="footer" data-theme="b" >
+
+                <span id="rptheader">
+<!--                    <a href="#popupCost" data-rel="popup" data-position-to="window" class="ui-btn ui-corner-all ui-shadow ui-btn-inline " data-transition="pop"><small>CostOfGS</small></a>
+                    <div data-role="popup" id="popupCost" data-theme="a" class="ui-corner-all">
+                            <form>
+                                    <div style="padding:0px 0px;">
+                                            <h3>Cost of Service Sold Expense</h3>
+                                            <label for="un" class="ui-hidden-accessible">comment</label>
+                                            <input type="text" name="costcomm" id="costcomm" value="" placeholder="comment" data-theme="a">
+                                <br> Expense paid for 1 year = 1. Otherwise 0 for this year expense
+                                            <label for="un" class="ui-hidden-accessible">current Year</label>
+                                            <input type="text" name="costyr" id="costyr" value="" placeholder="current year = 0" data-theme="a">
+                                                                                                                          
+                                            <label for="un" class="ui-hidden-accessible">amount</label>
+                                            <input type="text" name="costamount" id="costamount" value="" placeholder="amount" data-theme="a">
+                                           
+                                            <button type="submit" id="costsubmit" class="ui-btn ui-corner-all ui-shadow ui-btn-b ui-btn-icon-left">Submit</button>
+                                        </div>
+                                </form>
+                    </div>                        -->
+                    <a href="#popupRev" data-rel="popup" data-position-to="window" class="ui-btn ui-corner-all ui-shadow ui-btn-inline " data-transition="pop"><small>Revenue</small></a>
+                    <div data-role="popup" id="popupRev" data-theme="a" class="ui-corner-all">
+                            <form>
+                                    <div style="padding:0px 0px;">
+                                            <h3>General Account Revenue</h3>
+                                            <label for="un" class="ui-hidden-accessible">comment</label>
+                                            <input type="text" name="revcomm" id="revcomm" value="" placeholder="comment" data-theme="a">
+                                                                           
+                                            <label for="un" class="ui-hidden-accessible">amount</label>
+                                            <input type="text" name="revamount" id="revamount" value="" placeholder="amount" data-theme="a">
+                                           
+                                            <button type="submit" id="revsubmit" class="ui-btn ui-corner-all ui-shadow ui-btn-b ui-btn-icon-left">Submit</button>
+                                        </div>
+                                </form>
+                    </div>  
+                    <a href="#popupEx" data-rel="popup" data-position-to="window" class="ui-btn ui-corner-all ui-shadow ui-btn-inline " data-transition="pop"><small>Expense</small></a>
+                    <div data-role="popup" id="popupEx" data-theme="a" class="ui-corner-all">
+                            <form>
+                                    <div style="padding:0px 0px;">
+                                            <h3>General Account Expense</h3>
+                                            <label for="un" class="ui-hidden-accessible">comment</label>
+                                            <input type="text" name="excomm" id="excomm" value="" placeholder="comment" data-theme="a">
+                                            <br>some expense for 50% rule. e.g.meal and entertainment (100% default)
+                                            <label for="un" class="ui-hidden-accessible">rate in %</label>
+                                            <input type="text" name="exrate" id="exrate" value="" placeholder="rate%" data-theme="a">
+
+                                            <label for="un" class="ui-hidden-accessible">amount</label>
+                                            <input type="text" name="examount" id="examount" value="" placeholder="amount" data-theme="a">
+                                           
+                                            <button type="submit" id="exsubmit" class="ui-btn ui-corner-all ui-shadow ui-btn-b ui-btn-icon-left">Submit</button>
+                                        </div>
+                                </form>
+                    </div>  
+                    <a href="#popupDep" data-rel="popup" data-position-to="window" class="ui-btn ui-corner-all ui-shadow ui-btn-inline " data-transition="pop"><small>Deprecate</small></a>
+                    <div data-role="popup" id="popupDep" data-theme="a" class="ui-corner-all">
+                            <form>
+                                    <div style="padding:0px 0px;">
+                                            <h3>Asset Deprecation Expense</h3>
+                                Computer, Equipment, Office furniture, Vehicles
+                                            <label for="un" class="ui-hidden-accessible">comment</label>
+                                            <input type="text" name="depcomm" id="depcomm" value="" placeholder="comment" data-theme="a">
+                                <br>Deprecation rate in % e.g. 10%, 30%, 50% for max 5 years
+                                            <label for="un" class="ui-hidden-accessible">rate in %</label>
+                                            <input type="text" name="deprate" id="deprate" value="" placeholder="rate%" data-theme="a">
+                                                                                                                      
+                                            <label for="un" class="ui-hidden-accessible">amount</label>
+                                            <input type="text" name="depamount" id="depamount" value="" placeholder="amount" data-theme="a">
+                                           
+                                            <button type="submit" id="depsubmit" class="ui-btn ui-corner-all ui-shadow ui-btn-b ui-btn-icon-left">Submit</button>
+                                        </div>
+                                </form>
+                    </div>    
+<!--                    <a href="#popupTax" data-rel="popup" data-position-to="window" class="ui-btn ui-corner-all ui-shadow ui-btn-inline " data-transition="pop"><small>TAX</small></a>
+                    <div data-role="popup" id="popupTax" data-theme="a" class="ui-corner-all">
+                            <form>
+                                    <div style="padding:0px 0px;">
+                                            <h3>General Account Tax</h3>
+                                            <label for="un" class="ui-hidden-accessible">comment</label>
+                                            <input type="text" name="taxcomm" id="taxcomm" value="" placeholder="comment" data-theme="a">
+
+                                            <label for="un" class="ui-hidden-accessible">amount</label>
+                                            <input type="text" name="taxamount" id="taxamount" value="" placeholder="amount" data-theme="a">
+                                           
+                                            <button type="submit" id="taxsubmit" class="ui-btn ui-corner-all ui-shadow ui-btn-b ui-btn-icon-left">Submit</button>
+                                        </div>
+                                </form>
+                    </div>                      -->
+                </span>  
+                <span id="trheader">
+                </span>
+            </div>  
+
+            <div data-role="content" id="textcontent">
+
+                <ul id="myid" data-role="listview" data-theme="d" data-divider-theme="d">
+                    <li id="0">Accounting Listing</li>
+                </ul> 
+
+                <p><br></p>           
+                <ul id="entryid" data-role="listview" data-theme="d" data-divider-theme="d">
+                    <li id="0">Accounting Entry Listing</li>
+                </ul> 
+            </div>
+        </div>
+
+
+        <script src="lib/jquery/2.1.1/jquery-2.1.1.min.js"></script>
+        <script src="lib/jqm/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+        <script type="text/javascript" src="js/iisweb.js"></script>            
+        <script type="text/javascript" src="js/iiswebaccountadmrp.js"></script>          
+    </body>
+</html>
