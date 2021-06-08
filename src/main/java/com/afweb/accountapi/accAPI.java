@@ -67,25 +67,33 @@ public class accAPI {
     public void setDataSource(JdbcTemplate jdbcTemplate, DataSource dataSource) {
         setJdbcTemplate(jdbcTemplate);
         setDataSource(dataSource);
+
+        DriverManagerDataSource dataS = (DriverManagerDataSource) dataSource;
+        options = new ConnectionOptions(DataSourceDriver.JDBC_MYSQL)
+                .url(dataS.getUrl())
+                .username(dataS.getUsername())
+                .password(dataS.getPassword());
     }
     //////////////////////
     public static ConnectionOptions options = null;
     public static ChartOfAccounts chartOfAccounts = null;
+    public static Ledger ledger = null;
 
-    public int initAccountEntry(ServiceAFweb serviceAFWeb) {
+    public int createAccountEntry(ServiceAFweb serviceAFWeb) {
         try {
-            DriverManagerDataSource dataSource = (DriverManagerDataSource) accAPI.getDataSource();
-
-            options = new ConnectionOptions(DataSourceDriver.JDBC_MYSQL)
-                    .url(dataSource.getUrl())
-                    .username(dataSource.getUsername())
-                    .password(dataSource.getPassword());
-
+            if (options == null) {
+                return 0;
+            }
             chartOfAccounts = new ChartOfAccounts.ChartOfAccountsBuilder()
                     .create("CASH_ACCOUNT_1", "0.00", "CAD")
                     .create("REVENUE_ACCOUNT_1", "0.00", "CAD")
                     .build();
 
+            ledger = new Ledger.LedgerBuilder(chartOfAccounts)
+                    .name("Ledger accounts")
+                    .options(options)
+                    .build()
+                    .init();
             return 1;
         } catch (Exception ex) {
             logger.info("> initAccountEntry exception " + ex);
@@ -98,18 +106,19 @@ public class accAPI {
             if (options == null) {
                 return 0;
             }
-            if (chartOfAccounts == null) {
-                chartOfAccounts = new ChartOfAccounts.ChartOfAccountsBuilder()
-                        .includeExisted("CASH_ACCOUNT_1")
-                        .includeExisted("REVENUE_ACCOUNT_1")
-                        .build();
+            if (ledger == null) {
+                if (chartOfAccounts == null) {
+                    chartOfAccounts = new ChartOfAccounts.ChartOfAccountsBuilder()
+                            .includeExisted("CASH_ACCOUNT_1")
+                            .includeExisted("REVENUE_ACCOUNT_1")
+                            .build();
+                }
+                ledger = new Ledger.LedgerBuilder(chartOfAccounts)
+                        .name("Ledger accounts")
+                        .options(options)
+                        .build()
+                        .init();
             }
-            Ledger ledger = new Ledger.LedgerBuilder(chartOfAccounts)
-                    .name("Ledger accounts")
-                    .options(options)
-                    .build()
-                    .init();
-
             return 1;
         } catch (Exception ex) {
             logger.info("> initAccountEntry exception " + ex);

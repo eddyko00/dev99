@@ -428,9 +428,10 @@ public class ServiceAFweb {
                     serverObj.setServip(servIP);
 
                     setLockNameProcess(serverLockName, ConstantKey.SRV_LOCKTYPE, lockDateValue, serverObj.getSrvProjName() + " " + serverObj.getServip());
-
                 }
                 // final initialization
+                this.getAccountingImp().initLedgerEntry(this);
+                
             } else {
                 if (timerThreadMsg != null) {
                     if (timerThreadMsg.indexOf("adminsignal") != -1) {
@@ -687,9 +688,7 @@ public class ServiceAFweb {
             // javamain localmysqlflag nn2testflag flagNNLearningSignal nndebugflag
             logger.info("Start mydebugtestflag.....");
 
-            mytest.main(null);
-
-            
+              
             logger.info("End mydebugtestflag.....");
         }
         ///////////////////////////////////////////////////////////////////////////////////   
@@ -2496,14 +2495,16 @@ public class ServiceAFweb {
         logger.info(">InitDBData ");
         // 0 - new db, 1 - db already exist, -1 db error
         
-        int retStatus = this.getAccountingImp().initAccAPI_DB();
+        int retStatus = getAccountingImp().initAccAPI_DB();
 
         if (retStatus >= 0) {
             logger.info(">InitDB Customer account ");
 
             if (retStatus == 0) {
-
-            }
+                getAccountingImp().createAccountEntry(this);
+            } 
+                
+            getAccountingImp().initLedgerEntry(this);
 
         }
         return retStatus;
