@@ -71,6 +71,8 @@ public final class TransferRequest implements Serializable {
         return new Builder();
     }
 
+
+    
     @FunctionalInterface
     public interface ReferenceStep {
 
@@ -91,7 +93,8 @@ public final class TransferRequest implements Serializable {
          */
         AccountStep type(String transactionType);
     }
-
+    
+    
     @FunctionalInterface
     public interface AccountStep {
 
@@ -186,4 +189,5 @@ public final class TransferRequest implements Serializable {
     public String getTransactionType() {
         return transactionType;
     }
+    
 }

@@ -677,7 +677,9 @@ public class ServiceAFweb {
 //            this.getAccountingImp().createAccountEntry(this);
 //            this.getAccountingImp().initLedgerEntry(this);
 //
-//            this.getAccountingImp().addTransfer("Billing", 10);
+            long curDatel = TimeConvertion.currentTimeMillis();
+            String ref = "T" + curDatel;
+            this.getAccountingImp().addTransferCashRev(ref, "Billing", 10, "testing...");
             accAPI.getLedger().printHistoryLog();
 
             logger.info("End mydebugtestflag.....");

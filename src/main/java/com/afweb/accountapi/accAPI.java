@@ -208,19 +208,20 @@ public class accAPI {
         return 0;
     }
 
-    public int addTransfer(String type, double amount) {
+    public int addTransferCashRev(String ref, String type, double amount, String comment) {
         try {
             Ledger ledgerTr = accAPI.getLedger();
             if (ledgerTr == null) {
                 return 0;
             }
             TransferRequest transferRequest1 = ledgerTr.createTransferRequest()
-                    .reference("T1")
-                    .type(type)
+                    .reference(ref)
+                    .type(type)                 
                     .account("cash").debit("" + amount, "CAD")
                     .account("revenues").credit("" + amount, "CAD")
                     .build();
 
+            transferRequest1.setComment(comment);
             ledgerTr.commit(transferRequest1);
         } catch (Exception ex) {
             logger.info("> addTransfer exception " + ex);
