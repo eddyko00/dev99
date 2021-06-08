@@ -15,12 +15,15 @@
  */
 package com.afweb.accountapi;
 
-import com.afweb.service.ServiceRemoteDB;
-import com.afweb.util.CKey;
+import com.afweb.service.*;
+import com.afweb.util.*;
+import com.yanimetaxas.bookkeeping.*;
+
 import java.util.ArrayList;
 import java.util.logging.Logger;
 import javax.sql.DataSource;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 /**
  *
@@ -65,7 +68,56 @@ public class accAPI {
         setJdbcTemplate(jdbcTemplate);
         setDataSource(dataSource);
     }
+    //////////////////////
+    public static ConnectionOptions options = null;
+    public static ChartOfAccounts chartOfAccounts = null;
 
+    public int initAccountEntry(ServiceAFweb serviceAFWeb) {
+        try {
+            DriverManagerDataSource dataSource = (DriverManagerDataSource) accAPI.getDataSource();
+
+            options = new ConnectionOptions(DataSourceDriver.JDBC_MYSQL)
+                    .url(dataSource.getUrl())
+                    .username(dataSource.getUsername())
+                    .password(dataSource.getPassword());
+
+            chartOfAccounts = new ChartOfAccounts.ChartOfAccountsBuilder()
+                    .create("CASH_ACCOUNT_1", "0.00", "CAD")
+                    .create("REVENUE_ACCOUNT_1", "0.00", "CAD")
+                    .build();
+
+            return 1;
+        } catch (Exception ex) {
+            logger.info("> initAccountEntry exception " + ex);
+        }
+        return 0;
+    }
+
+    public int initLedgerEntry(ServiceAFweb serviceAFWeb) {
+        try {
+            if (options == null) {
+                return 0;
+            }
+            if (chartOfAccounts == null) {
+                chartOfAccounts = new ChartOfAccounts.ChartOfAccountsBuilder()
+                        .includeExisted("CASH_ACCOUNT_1")
+                        .includeExisted("REVENUE_ACCOUNT_1")
+                        .build();
+            }
+            Ledger ledger = new Ledger.LedgerBuilder(chartOfAccounts)
+                    .name("Ledger accounts")
+                    .options(options)
+                    .build()
+                    .init();
+
+            return 1;
+        } catch (Exception ex) {
+            logger.info("> initAccountEntry exception " + ex);
+        }
+        return 0;
+    }
+
+    //////////////////////
     public int initAccAPI_DB() {
 
         int total = 0;
@@ -78,7 +130,7 @@ public class accAPI {
             }
             total = getCountRowsInTable(getJdbcTemplate(), "account_ac");
         } catch (Exception e) {
-            logger.info("> initAccAPI_DB Table exception");
+            logger.info("> initAccAPI_DB Table exception ");
             total = -1;
         }
         if (total >= 0) {

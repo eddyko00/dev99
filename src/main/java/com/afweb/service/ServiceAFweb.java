@@ -687,13 +687,6 @@ public class ServiceAFweb {
             // javamain localmysqlflag nn2testflag flagNNLearningSignal nndebugflag
             logger.info("Start mydebugtestflag.....");
 
-
-            String symbol = "HOU.TO";
-            int trNN = ConstantKey.INT_TR_NN1;
-            int TR_NN = trNN;
-            String nnName = ConstantKey.TR_NN1;
-            String BPnameSym = CKey.NN_version + "_" + nnName + "_" + symbol;
-
             mytest.main(null);
 
             

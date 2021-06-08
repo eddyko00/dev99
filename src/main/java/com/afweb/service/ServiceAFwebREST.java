@@ -1122,26 +1122,26 @@ public class ServiceAFwebREST {
 //
 //    /cust/{username}/acc/{accountid}/stname
 
-    public ArrayList<String> getRESTAccountStockNameList(String EmailUserName, String AccountIDSt, String URL) {
-        ServiceAFweb.getServerObj().setCntRESTrequest(ServiceAFweb.getServerObj().getCntRESTrequest() + 1);
-        String subResourcePath = URL + "/cust/" + EmailUserName + "/acc/" + AccountIDSt + "/stname";
-        try {
-
-//            ClientResponse response = get(subResourcePath, null);
-//            String output = response.getEntity(String.class);
-            String output = sendRequest_1(METHOD_GET, subResourcePath, null, null);
-            ArrayList<String> stockNameList = new ArrayList();
-            stockNameList = new ObjectMapper().readValue(output, ArrayList.class);
-
-            return stockNameList;
-
-        } catch (Exception ex) {
-            logger.info("getRESTAccountStockNameList exception " + ex);
-            ServiceAFweb.getServerObj().setCntRESTexception(ServiceAFweb.getServerObj().getCntRESTexception() + 1);
-        }
-        return null;
-    }
+//    public ArrayList<String> getRESTAccountStockNameList(String EmailUserName, String AccountIDSt, String URL) {
+//        ServiceAFweb.getServerObj().setCntRESTrequest(ServiceAFweb.getServerObj().getCntRESTrequest() + 1);
+//        String subResourcePath = URL + "/cust/" + EmailUserName + "/acc/" + AccountIDSt + "/stname";
+//        try {
 //
+////            ClientResponse response = get(subResourcePath, null);
+////            String output = response.getEntity(String.class);
+//            String output = sendRequest_1(METHOD_GET, subResourcePath, null, null);
+//            ArrayList<String> stockNameList = new ArrayList();
+//            stockNameList = new ObjectMapper().readValue(output, ArrayList.class);
+//
+//            return stockNameList;
+//
+//        } catch (Exception ex) {
+//            logger.info("getRESTAccountStockNameList exception " + ex);
+//            ServiceAFweb.getServerObj().setCntRESTexception(ServiceAFweb.getServerObj().getCntRESTexception() + 1);
+//        }
+//        return null;
+//    }
+
 //    public ArrayList getServerList() {
 //        ServiceAFweb.getServerObj().setCntRESTrequest(ServiceAFweb.getServerObj().getCntRESTrequest() + 1);
 //        String subResourcePath = "/server";
