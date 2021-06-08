@@ -15,6 +15,21 @@ import java.util.List;
  */
 public final class Transaction implements Serializable {
 
+    /**
+     * @return the updatedatel
+     */
+    public long getUpdatedatel() {
+        return updatedatel;
+    }
+
+    /**
+     * @return the comment
+     */
+    public String getComment() {
+        return comment;
+    }
+
+
   private static final long serialVersionUID = 1L;
 
   private final String transactionRef;
@@ -23,13 +38,20 @@ public final class Transaction implements Serializable {
 
   private final Date transactionDate;
 
+  private final long updatedatel;
+
+  private final String comment;
+  
   private final List<TransactionLeg> legs;
 
-  public Transaction(String transactionRef, String transactionType, Date transactionDate,
+  public Transaction(String transactionRef, String transactionType, Date transactionDate, long updatedatel, String comment,
       List<TransactionLeg> legs) {
     this.transactionRef = transactionRef;
     this.transactionType = transactionType;
     this.transactionDate = transactionDate;
+    this.updatedatel = updatedatel;
+    this.comment = comment;
+            
     this.legs = legs;
   }
 

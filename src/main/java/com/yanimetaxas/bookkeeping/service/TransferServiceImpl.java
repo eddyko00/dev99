@@ -1,5 +1,6 @@
 package com.yanimetaxas.bookkeeping.service;
 
+import com.afweb.util.TimeConvertion;
 import com.google.common.collect.Lists;
 import com.yanimetaxas.bookkeeping.dao.AccountDao;
 import com.yanimetaxas.bookkeeping.dao.TransactionDao;
@@ -23,70 +24,71 @@ import org.springframework.transaction.annotation.Transactional;
  */
 public class TransferServiceImpl implements TransferService {
 
-  private TransferValidator validator;
-  private AccountDao accountDao;
-  private TransactionDao transactionDao;
+    private TransferValidator validator;
+    private AccountDao accountDao;
+    private TransactionDao transactionDao;
 
-  @Override
-  @Transactional(rollbackFor = Exception.class, isolation = Isolation.SERIALIZABLE)
-  public void transferFunds(TransferRequest transferRequest)
-      throws InsufficientFundsException, AccountNotFoundException {
+    @Override
+    @Transactional(rollbackFor = Exception.class, isolation = Isolation.SERIALIZABLE)
+    public void transferFunds(TransferRequest transferRequest)
+            throws InsufficientFundsException, AccountNotFoundException {
 
-    validateRequest(transferRequest);
-    for (TransactionLeg leg : transferRequest.getLegs()) {
-      accountDao.updateBalance(leg);
+        validateRequest(transferRequest);
+        for (TransactionLeg leg : transferRequest.getLegs()) {
+            accountDao.updateBalance(leg);
+        }
+        validator.validBalance(transferRequest.getLegs());
+        storeTransaction(transferRequest);
     }
-    validator.validBalance(transferRequest.getLegs());
-    storeTransaction(transferRequest);
-  }
 
-  private void validateRequest(TransferRequest request) {
-    validator.validateTransferRequest(request);
-    validator.isTransactionBalanced(request.getLegs());
-    validator.transferRequestExists(request.getTransactionRef());
-    validator.currenciesMatch(request.getLegs());
-  }
-
-  private void storeTransaction(TransferRequest request) {
-    Transaction transaction = new Transaction(
-        request.getTransactionRef(),
-        request.getTransactionType(),
-        new Date(),
-        request.getLegs()
-    );
-    transactionDao.storeTransaction(transaction);
-  }
-
-  @Override
-  public List<Transaction> findTransactionsByAccountRef(String accountRef)
-      throws AccountNotFoundException {
-    if (!accountDao.accountExists(accountRef)) {
-      throw new AccountNotFoundException(accountRef);
+    private void validateRequest(TransferRequest request) {
+        validator.validateTransferRequest(request);
+        validator.isTransactionBalanced(request.getLegs());
+        validator.transferRequestExists(request.getTransactionRef());
+        validator.currenciesMatch(request.getLegs());
     }
-    Set<String> transactionRefs = transactionDao.getTransactionRefsForAccount(accountRef);
-    if (transactionRefs.isEmpty()) {
-      return Lists.newArrayList();
+
+    private void storeTransaction(TransferRequest request) {
+        Date dd = new Date(TimeConvertion.currentTimeMillis());
+        Transaction transaction = new Transaction(
+                request.getTransactionRef(),
+                request.getTransactionType(),
+                dd, //new Date(),
+                dd.getTime(),
+                request.getComment(),
+                request.getLegs()
+        );
+        transactionDao.storeTransaction(transaction);
     }
-    return transactionDao.getTransactions(Lists.newArrayList(transactionRefs));
-  }
 
-  @Override
-  public Transaction getTransactionByRef(String transactionRef) {
-    return transactionDao.getTransactionByRef(transactionRef);
-  }
+    @Override
+    public List<Transaction> findTransactionsByAccountRef(String accountRef)
+            throws AccountNotFoundException {
+        if (!accountDao.accountExists(accountRef)) {
+            throw new AccountNotFoundException(accountRef);
+        }
+        Set<String> transactionRefs = transactionDao.getTransactionRefsForAccount(accountRef);
+        if (transactionRefs.isEmpty()) {
+            return Lists.newArrayList();
+        }
+        return transactionDao.getTransactions(Lists.newArrayList(transactionRefs));
+    }
 
-  public void setAccountDao(AccountDao accountDao) {
-    this.accountDao = accountDao;
-  }
+    @Override
+    public Transaction getTransactionByRef(String transactionRef) {
+        return transactionDao.getTransactionByRef(transactionRef);
+    }
 
-  public void setTransactionDao(TransactionDao transactionDao) {
-    this.transactionDao = transactionDao;
-  }
+    public void setAccountDao(AccountDao accountDao) {
+        this.accountDao = accountDao;
+    }
 
-  public void setValidator(TransferValidator validator) {
-    this.validator = validator;
-  }
+    public void setTransactionDao(TransactionDao transactionDao) {
+        this.transactionDao = transactionDao;
+    }
+
+    public void setValidator(TransferValidator validator) {
+        this.validator = validator;
+    }
 
 }
-
-

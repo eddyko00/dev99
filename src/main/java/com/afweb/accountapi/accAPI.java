@@ -217,8 +217,8 @@ public class accAPI {
             TransferRequest transferRequest1 = ledgerTr.createTransferRequest()
                     .reference("T1")
                     .type(type)
-                    .account("cash").debit(""+amount, "CAD")
-                    .account("revenues").credit(""+amount, "CAD")
+                    .account("cash").debit("" + amount, "CAD")
+                    .account("revenues").credit("" + amount, "CAD")
                     .build();
 
             ledgerTr.commit(transferRequest1);
@@ -266,7 +266,7 @@ public class accAPI {
                 createTableList.add(""
                         + " CREATE TABLE account_ac (id INTEGER AUTO_INCREMENT,client_ref VARCHAR(100) NOT NULL,account_ref VARCHAR(20) NOT NULL, amount DECIMAL(20,2) NOT NULL, currency VARCHAR(3) NOT NULL,PRIMARY KEY (id)) ENGINE=InnoDB DEFAULT CHARSET=utf8");
                 createTableList.add(""
-                        + " CREATE TABLE transaction_history (client_ref VARCHAR(100) NOT NULL,transaction_ref VARCHAR(20) NOT NULL,transaction_type VARCHAR(20) NOT NULL,transaction_date DATE NOT NULL,PRIMARY KEY(client_ref, transaction_ref))");
+                        + " CREATE TABLE transaction_history (client_ref VARCHAR(100) NOT NULL,transaction_ref VARCHAR(20) NOT NULL,transaction_type VARCHAR(20) NOT NULL,transaction_date DATE NOT NULL, updatedatel bigint(20) not null, comment VARCHAR(255) NOT NULL,PRIMARY KEY(client_ref, transaction_ref))");
                 createTableList.add(""
                         + " CREATE TABLE transaction_leg (client_ref VARCHAR(100) NOT NULL,transaction_ref VARCHAR(20) NOT NULL,account_ref VARCHAR(20) NOT NULL,amount DECIMAL(20,2) NOT NULL,currency VARCHAR(3) NOT NULL)");
 

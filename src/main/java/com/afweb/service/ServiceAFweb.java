@@ -676,8 +676,8 @@ public class ServiceAFweb {
 //            this.getAccountingImp().initAccAPI_DB();
 //            this.getAccountingImp().createAccountEntry(this);
 //            this.getAccountingImp().initLedgerEntry(this);
-
-            this.getAccountingImp().addTransfer("Billing", 10);
+//
+//            this.getAccountingImp().addTransfer("Billing", 10);
             accAPI.getLedger().printHistoryLog();
 
             logger.info("End mydebugtestflag.....");
