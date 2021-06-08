@@ -673,6 +673,9 @@ public class ServiceAFweb {
 
             // javamain localmysqlflag nn2testflag flagNNLearningSignal nndebugflag
             logger.info("Start mydebugtestflag.....");
+            this.getAccountingImp().initAccAPI_DB();
+            this.getAccountingImp().createAccountEntry(this);
+            this.getAccountingImp().initLedgerEntry(this);
 
             this.getAccountingImp().addTransfer("Billing", 10);
             accAPI.getLedger().printHistoryLog();
