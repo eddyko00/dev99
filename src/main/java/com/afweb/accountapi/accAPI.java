@@ -18,7 +18,7 @@ package com.afweb.accountapi;
 import com.afweb.service.*;
 import com.afweb.util.*;
 import com.yanimetaxas.bookkeeping.*;
-import com.yanimetaxas.bookkeeping.ChartOfAccounts.*;
+import com.yanimetaxas.bookkeeping.ChartOfAccounts.ChartOfAccountsBuilder;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,6 +33,20 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
  * @author eddy
  */
 public class accAPI {
+
+    /**
+     * @return the ledger
+     */
+    public static Ledger getLedger() {
+        return ledger;
+    }
+
+    /**
+     * @param aLedger the ledger to set
+     */
+    public static void setLedger(Ledger aLedger) {
+        ledger = aLedger;
+    }
 
     protected static Logger logger = Logger.getLogger("accAPI");
     private static JdbcTemplate jdbcTemplate;
@@ -78,9 +92,10 @@ public class accAPI {
                 .password(dataS.getPassword());
     }
     //////////////////////
+
     public static ConnectionOptions options = null;
     public static ChartOfAccounts chartOfAccounts = null;
-    public static Ledger ledger = null;
+    private static Ledger ledger = null;
 
     //https://www.accountingcoach.com/accounting-basics/explanation/5
 //Balance Sheet accounts:
@@ -180,11 +195,11 @@ public class accAPI {
 //                            .includeExisted("CASH_ACCOUNT_1")
 //                            .includeExisted("REVENUE_ACCOUNT_1")
 //                            .build();
-            ledger = new Ledger.LedgerBuilder(chartOfAccounts)
+            setLedger(new Ledger.LedgerBuilder(chartOfAccounts)
                     .name("Ledger accounts")
                     .options(options)
                     .build()
-                    .init();
+                    .init());
             return 1;
         } catch (Exception ex) {
             logger.info("> initAccountEntry exception " + ex);

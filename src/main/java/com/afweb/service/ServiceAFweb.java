@@ -87,7 +87,7 @@ public class ServiceAFweb {
 
     private ServiceAFwebREST serviceAFwebREST = new ServiceAFwebREST();
     private accAPI accountingImp = new accAPI();
-
+    
     public static String PROXYURL = "";
     public static String URL_LOCALDB = "";
     public static String FileLocalPath = "";
@@ -95,6 +95,7 @@ public class ServiceAFweb {
     public static String UA_Str = "";
     public static String PA_Str = "";
     public static String UU_Str = "";
+
 
     private static AccountObj cacheAccountAdminObj = null;
     private static long cacheAccountAdminObjDL = 0;
@@ -150,6 +151,8 @@ public class ServiceAFweb {
         }
         return null;
     }
+
+
 
     /**
      * @return the serverObj
@@ -304,7 +307,7 @@ public class ServiceAFweb {
             if (getServerObj().isTimerInit() == false) {
                 /////////////
                 initDataSource();
-                InitStaticData();
+                InitStaticData();   
                 // work around. must initialize for remote MYSQL
                 ServiceRemoteDB.setServiceAFWeb(this);
                 getStockImp().setDataSource(jdbcTemplate, dataSource);
@@ -405,7 +408,7 @@ public class ServiceAFweb {
                     // 0 - new db, 1 - db already exist, -1 db error
                     int ret = InitDBData();  // init DB Adding customer account
                     if (ret != -1) {
-                        InitSystemData();
+                        InitSystemData();   
 
                         initProcessTimer = false;
                         delayProcessTimer = 0;
@@ -428,7 +431,7 @@ public class ServiceAFweb {
                 }
                 // final initialization
                 this.getAccountingImp().initLedgerEntry(this);
-
+                
             } else {
                 if (timerThreadMsg != null) {
                     if (timerThreadMsg.indexOf("adminsignal") != -1) {
@@ -476,6 +479,7 @@ public class ServiceAFweb {
 
     }
 
+
     private void restoreSystem() {
         getServerObj().setSysMaintenance(true);
         serverObj.setTimerInit(true);
@@ -521,8 +525,10 @@ public class ServiceAFweb {
 //
 ///////////////////////////////////////////////////////////////////////////////////
 
+
 ///////////////////////////////////////////////////////////////////////////////////
                     AFprocessDebug();
+
 
 ///////////////////////////////////////////////////////////////////////////////////
                     logger.info(">>>>>>>> DEBUG end >>>>>>>>>");
@@ -592,6 +598,7 @@ public class ServiceAFweb {
         if ((getServerObj().getProcessTimerCnt() % 11) == 0) {
             // add or remove stock in Mutual fund account based on all stocks in the system
             System.gc();
+ 
 
         } else if ((getServerObj().getProcessTimerCnt() % 7) == 0) {
 
@@ -599,9 +606,15 @@ public class ServiceAFweb {
             BillingProcess billProc = new BillingProcess();
             billProc.processUserBillingAll(this);
 
+
         } else if ((getServerObj().getProcessTimerCnt() % 5) == 0) {
 
+
+
+
         } else if ((getServerObj().getProcessTimerCnt() % 3) == 0) {
+
+
 
 //            
         } else if ((getServerObj().getProcessTimerCnt() % 2) == 0) {
@@ -636,6 +649,7 @@ public class ServiceAFweb {
     public static boolean nn3testflag = false;
     public static boolean nn30testflag = false;
     public static int cntNN = 0;
+
 
     boolean initLRnn = false;
 ///////////////////////////////
@@ -676,12 +690,14 @@ public class ServiceAFweb {
             getAccountingImp().initAccAPI_DB();
             getAccountingImp().createAccountEntry(this);
             getAccountingImp().initLedgerEntry(this);
-
+            accAPI.getLedger().printHistoryLog();
+              
             logger.info("End mydebugtestflag.....");
         }
         ///////////////////////////////////////////////////////////////////////////////////   
         /// update stock split process
         ///////////////////////////////////////////////////////////////////////////////////
+
 
         ///////////////////////////////////////////////////////////////////////////////////   
         ///////////////////////////////////////////////////////////////////////////////////
@@ -690,6 +706,7 @@ public class ServiceAFweb {
     public void debugtest() {
 
     }
+
 
 //////////////////////////////////////////////////
     public static void AFSleep1Sec(int sec) {
@@ -746,6 +763,8 @@ public class ServiceAFweb {
         return ret;
     }
 
+
+
     public CustomerObj getCustomerIgnoreMaintenance(String EmailUserName, String Password) {
 
         NameObj nameObj = new NameObj(EmailUserName);
@@ -797,6 +816,7 @@ public class ServiceAFweb {
         return loginObj;
     }
 
+
     public LoginObj getCustomerAccLogin(String EmailUserName, String AccountIDSt) {
         if (getServerObj().isSysMaintenance() == true) {
             return null;
@@ -825,6 +845,7 @@ public class ServiceAFweb {
     }
 
     ////////////////////////////
+
     //only on type=" + CustomerObj.INT_CLIENT_BASIC_USER;
     public ArrayList getExpiredCustomerList(int length) {
         ArrayList result = null;
@@ -998,6 +1019,7 @@ public class ServiceAFweb {
         return getAccountImp().getAccountObjByAccountID(accountId);
     }
 
+
     public int SystemUpdateSQLList(ArrayList<String> SQLlist) {
         if (getServerObj().isSysMaintenance() == true) {
             return 0;
@@ -1026,6 +1048,7 @@ public class ServiceAFweb {
         return getStockImp().updateSQLArrayList(SQLlist);
     }
 
+
     public String SystemSQLquery(String SQL) {
 //        if (getServerObj().isSysMaintenance() == true) {
 //            return "";
@@ -1050,6 +1073,7 @@ public class ServiceAFweb {
         }
         return getAccountImp().getAllSQLquery(SQL);
     }
+
 
     public AccountObj getAccountByCustomerAccountID(String EmailUserName, String Password, String AccountIDSt) {
         if (getServerObj().isSysMaintenance() == true) {
@@ -1285,6 +1309,7 @@ public class ServiceAFweb {
         return 1;
     }
 
+
     ////////////////////////
     public ArrayList getAllLock() {
 
@@ -1371,6 +1396,7 @@ public class ServiceAFweb {
 
     }
 //////////////////
+
 
     public int insertAccountTAX(String customername, String paymentSt, String reasonSt, String commentSt) {
         ServiceAFweb.lastfun = "insertAccountTAX";
@@ -2452,6 +2478,7 @@ public class ServiceAFweb {
         return "" + retSatus;
     }
 
+
     public String SystemStart() {
         boolean retSatus = true;
         serverObj.setSysMaintenance(false);
@@ -2470,7 +2497,7 @@ public class ServiceAFweb {
     public int InitDBData() {
         logger.info(">InitDBData ");
         // 0 - new db, 1 - db already exist, -1 db error
-
+        
         int retStatus = getAccountingImp().initAccAPI_DB();
 
         if (retStatus >= 0) {
@@ -2478,7 +2505,9 @@ public class ServiceAFweb {
 
             if (retStatus == 0) {
                 getAccountingImp().createAccountEntry(this);
-            }
+            } 
+                
+            getAccountingImp().initLedgerEntry(this);
 
         }
         return retStatus;
@@ -2489,8 +2518,10 @@ public class ServiceAFweb {
         logger.info(">InitDB InitStaticData ");
     }
 
+
     public void InitSystemData() {
         logger.info(">InitDB InitSystemData ");
+
 
     }
 
@@ -2560,6 +2591,7 @@ public class ServiceAFweb {
     public void setAccountImp(AccountImp accountImp) {
         this.accountImp = accountImp;
     }
+
 
     /**
      * @return the serviceAFwebREST
