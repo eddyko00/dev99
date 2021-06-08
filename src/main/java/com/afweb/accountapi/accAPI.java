@@ -19,6 +19,7 @@ import com.afweb.service.*;
 import com.afweb.util.*;
 import com.yanimetaxas.bookkeeping.*;
 import com.yanimetaxas.bookkeeping.ChartOfAccounts.ChartOfAccountsBuilder;
+import com.yanimetaxas.bookkeeping.model.TransferRequest;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -202,7 +203,27 @@ public class accAPI {
                     .init());
             return 1;
         } catch (Exception ex) {
-            logger.info("> initAccountEntry exception " + ex);
+            logger.info("> initLedgerEntry exception " + ex);
+        }
+        return 0;
+    }
+
+    public int addTransfer(String type, double amount) {
+        try {
+            Ledger ledgerTr = accAPI.getLedger();
+            if (ledgerTr == null) {
+                return 0;
+            }
+            TransferRequest transferRequest1 = ledgerTr.createTransferRequest()
+                    .reference("T1")
+                    .type(type)
+                    .account("cash").debit(""+amount, "CAD")
+                    .account("revenues").credit(""+amount, "CAD")
+                    .build();
+
+            ledgerTr.commit(transferRequest1);
+        } catch (Exception ex) {
+            logger.info("> addTransfer exception " + ex);
         }
         return 0;
     }

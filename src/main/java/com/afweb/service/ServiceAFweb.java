@@ -674,6 +674,7 @@ public class ServiceAFweb {
             // javamain localmysqlflag nn2testflag flagNNLearningSignal nndebugflag
             logger.info("Start mydebugtestflag.....");
 
+            this.getAccountingImp().addTransfer("Billing", 10);
             accAPI.getLedger().printHistoryLog();
 
             logger.info("End mydebugtestflag.....");
