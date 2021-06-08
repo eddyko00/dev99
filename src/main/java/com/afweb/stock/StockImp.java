@@ -431,36 +431,6 @@ public class StockImp {
         return -1;  // DB error
     }
 
-    // 0 - new db, 1 - db already exist, -1 db error
-    public int initStockDB() {
-        try {
-
-            int result = stockdb.initStockDB();
-
-            if (result >= 0) {
-
-                //dummy stock
-                stockdb.addStock("T_T");
-
-                if (result == 0) {
-                    //clear lock                    
-                    stockdb.deleteAllLock();
-                    // add stocks
-                    for (int i = 0; i < ServiceAFweb.primaryStock.length; i++) {
-                        String stockN = ServiceAFweb.primaryStock[i];
-                        stockdb.addStock(stockN);
-                    }
-                    stockdb.addStock("T.TO");
-                    return 0; // new db
-                }
-                return 1; // DB already exist
-            }
-        } catch (Exception ex) {
-
-        }
-        return -1;  // DB error
-    }
-
     public ArrayList getAllNameSQL(String sql) {
         return stockdb.getAllNameSQL(sql);
     }
