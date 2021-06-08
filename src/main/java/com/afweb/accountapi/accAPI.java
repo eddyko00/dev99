@@ -18,8 +18,11 @@ package com.afweb.accountapi;
 import com.afweb.service.*;
 import com.afweb.util.*;
 import com.yanimetaxas.bookkeeping.*;
+import com.yanimetaxas.bookkeeping.ChartOfAccounts.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.logging.Logger;
 import javax.sql.DataSource;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -79,26 +82,71 @@ public class accAPI {
     public static ChartOfAccounts chartOfAccounts = null;
     public static Ledger ledger = null;
 
-    public int createAccountEntry(ServiceAFweb serviceAFWeb) {
-        try {
-            if (options == null) {
-                return 0;
-            }
-            chartOfAccounts = new ChartOfAccounts.ChartOfAccountsBuilder()
-                    .create("CASH_ACCOUNT_1", "0.00", "CAD")
-                    .create("REVENUE_ACCOUNT_1", "0.00", "CAD")
-                    .build();
+    //https://www.accountingcoach.com/accounting-basics/explanation/5
+//Balance Sheet accounts:
+//
+//Asset accounts (Examples: Cash, Accounts Receivable, Supplies, Equipment)
+//Liability accounts (Examples: Notes Payable, Accounts Payable, Wages Payable)
+//Stockholders' Equity accounts (Examples: Common Stock, Retained Earnings)
+    public static String Asset_accounts[] = {"cash", "acc_receivable", "equipment"};
+    public static String Liability_accounts[] = {"notes_payable", "acc_payable", "wages_payable"};
+    public static String Equity_accounts[] = {"common_stock", "retained_earnings"};
 
-            ledger = new Ledger.LedgerBuilder(chartOfAccounts)
-                    .name("Ledger accounts")
-                    .options(options)
-                    .build()
-                    .init();
-            return 1;
-        } catch (Exception ex) {
-            logger.info("> initAccountEntry exception " + ex);
+//Income Statement accounts:
+//
+//Revenue accounts (Examples: Service Revenues, Investment Revenues)
+//Expense accounts (Examples: Wages Expense, Rent Expense, Depreciation Expense)
+    public static String Revenue_accounts[] = {"revenues", "service_Revenues"};
+    public static String Expense_accounts[] = {"expense", "depreciation", "Wages_expense"};
+
+//https://accounting-simplified.com/financial/double-entry-accounting/    
+    public int createAccountEntry(ServiceAFweb serviceAFWeb) {
+
+        if (options == null) {
+            return 0;
         }
-        return 0;
+        List<String> itemList = new ArrayList<String>();
+        List<String> stringList = new ArrayList(Arrays.asList(Asset_accounts));
+        itemList.addAll(stringList);
+        stringList = new ArrayList(Arrays.asList(Liability_accounts));
+        itemList.addAll(stringList);
+        stringList = new ArrayList(Arrays.asList(Equity_accounts));
+        itemList.addAll(stringList);
+        stringList = new ArrayList(Arrays.asList(Revenue_accounts));
+        itemList.addAll(stringList);
+        stringList = new ArrayList(Arrays.asList(Expense_accounts));
+        itemList.addAll(stringList);
+
+        String[] itemsArray = new String[itemList.size()];
+        itemsArray = itemList.toArray(itemsArray);
+
+        for (int i = 0; i < itemsArray.length; i++) {
+            String accN = itemsArray[i];
+            try {
+                ChartOfAccountsBuilder accBuilder = new ChartOfAccounts.ChartOfAccountsBuilder();
+                accBuilder.create(accN, "0.00", "CAD");
+                ChartOfAccounts chartOfAccountsCreate = accBuilder.build();
+                Ledger ledgerCreate = new Ledger.LedgerBuilder(chartOfAccountsCreate)
+                        .name("Ledger accounts")
+                        .options(options)
+                        .build()
+                        .init();
+            } catch (Exception ex) {
+//                logger.info("> initAccountEntry exception " + ex);
+            }
+        }
+
+//            chartOfAccounts = new ChartOfAccounts.ChartOfAccountsBuilder()
+//                    .create("CASH_ACCOUNT_1", "0.00", "CAD")
+//                    .create("REVENUE_ACCOUNT_1", "0.00", "CAD")
+//                    .build();
+//            Ledger ledger = new Ledger.LedgerBuilder(chartOfAccounts)
+//                    .name("Ledger accounts")
+//                    .options(options)
+//                    .build()
+//                    .init();
+        return 1;
+
     }
 
     public int initLedgerEntry(ServiceAFweb serviceAFWeb) {
@@ -106,19 +154,37 @@ public class accAPI {
             if (options == null) {
                 return 0;
             }
-            if (ledger == null) {
-                if (chartOfAccounts == null) {
-                    chartOfAccounts = new ChartOfAccounts.ChartOfAccountsBuilder()
-                            .includeExisted("CASH_ACCOUNT_1")
-                            .includeExisted("REVENUE_ACCOUNT_1")
-                            .build();
-                }
-                ledger = new Ledger.LedgerBuilder(chartOfAccounts)
-                        .name("Ledger accounts")
-                        .options(options)
-                        .build()
-                        .init();
+            List<String> itemList = new ArrayList<String>();
+            List<String> stringList = new ArrayList(Arrays.asList(Asset_accounts));
+            itemList.addAll(stringList);
+            stringList = new ArrayList(Arrays.asList(Liability_accounts));
+            itemList.addAll(stringList);
+            stringList = new ArrayList(Arrays.asList(Equity_accounts));
+            itemList.addAll(stringList);
+            stringList = new ArrayList(Arrays.asList(Revenue_accounts));
+            itemList.addAll(stringList);
+            stringList = new ArrayList(Arrays.asList(Expense_accounts));
+            itemList.addAll(stringList);
+
+            String[] itemsArray = new String[itemList.size()];
+            itemsArray = itemList.toArray(itemsArray);
+
+            ChartOfAccountsBuilder accBuilder = new ChartOfAccounts.ChartOfAccountsBuilder();
+            for (int i = 0; i < itemsArray.length; i++) {
+                String accN = itemsArray[i];
+                accBuilder.includeExisted(accN);
             }
+            chartOfAccounts = accBuilder.build();
+
+//                    chartOfAccounts = new ChartOfAccounts.ChartOfAccountsBuilder()
+//                            .includeExisted("CASH_ACCOUNT_1")
+//                            .includeExisted("REVENUE_ACCOUNT_1")
+//                            .build();
+            ledger = new Ledger.LedgerBuilder(chartOfAccounts)
+                    .name("Ledger accounts")
+                    .options(options)
+                    .build()
+                    .init();
             return 1;
         } catch (Exception ex) {
             logger.info("> initAccountEntry exception " + ex);

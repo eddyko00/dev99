@@ -15,6 +15,9 @@
     <category name="org.springframework">
         <priority value="off"/>
     </category>   
+    <category name="o.s.j.d.DriverManagerDataSource">
+        <priority value="off"/>
+    </category>       
 <!--    <category name="org">
         <priority value="off"/>
     </category>    -->
