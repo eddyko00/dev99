@@ -673,13 +673,13 @@ public class ServiceAFweb {
 
             // javamain localmysqlflag nn2testflag flagNNLearningSignal nndebugflag
             logger.info("Start mydebugtestflag.....");
-//            this.getAccountingImp().initAccAPI_DB();
-//            this.getAccountingImp().createAccountEntry(this);
-//            this.getAccountingImp().initLedgerEntry(this);
+            this.getAccountingImp().initAccAPI_DB();
+            this.getAccountingImp().createAccountEntry(this);
+            this.getAccountingImp().initLedgerEntry(this);
 //
             long curDatel = TimeConvertion.currentTimeMillis();
             String ref = "T" + curDatel;
-            this.getAccountingImp().addTransferCashRev(ref, "Billing", 10, "testing...");
+            this.getAccountingImp().addTransferRevenue(ref, "Billing", 10, "testing...");
             accAPI.getLedger().printHistoryLog();
 
             logger.info("End mydebugtestflag.....");

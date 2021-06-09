@@ -104,18 +104,274 @@ public class accAPI {
 //Asset accounts (Examples: Cash, Accounts Receivable, Supplies, Equipment)
 //Liability accounts (Examples: Notes Payable, Accounts Payable, Wages Payable)
 //Stockholders' Equity accounts (Examples: Common Stock, Retained Earnings)
-    public static String Asset_accounts[] = {"cash", "acc_receivable", "equipment"};
-    public static String Liability_accounts[] = {"notes_payable", "acc_payable", "wages_payable"};
-    public static String Equity_accounts[] = {"common_stock", "retained_earnings"};
+    public static String A_CASH = "cash";
+    public static String A_ACC_RECEIVABLE = "acc_receivable";
+    public static String A_EQUIPMENT = "equipment";
+    public static String L_ACC_PAYABLE = "acc_payable";
+    public static String E_RET_EARNING = "retained_earnings";
+    public static String B_BUSINESS = "profit_loss_acc";
 
-//Income Statement accounts:
-//
-//Revenue accounts (Examples: Service Revenues, Investment Revenues)
-//Expense accounts (Examples: Wages Expense, Rent Expense, Depreciation Expense)
-    public static String Revenue_accounts[] = {"revenues", "service_Revenues"};
-    public static String Expense_accounts[] = {"expense", "depreciation", "Wages_expense"};
+    public static String Asset_accounts[] = {A_CASH, A_ACC_RECEIVABLE, A_EQUIPMENT};
+    public static String Liability_accounts[] = {L_ACC_PAYABLE};
+    public static String Equity_accounts[] = {E_RET_EARNING};
+
+    public static String Business_accounts[] = {B_BUSINESS};
+
+    //
+    //Revenue accounts (Examples: Service Revenues, Investment Revenues)
+    //Expense accounts (Examples: Wages Expense, Rent Expense, Depreciation Expense)
+    public static String R_REVENUE = "revenues";
+    public static String R_F_INCOME = "finance_income";
+    public static String R_SRV_REVENUE = "service_Revenues";
+    public static String EX_EXPENSE = "expense";
+    public static String EX_DEPRECIATION = "depreciation";
+    public static String EX_WAGES = "Wages_expense";
+
+    public static String Revenue_accounts[] = {R_REVENUE, R_F_INCOME, R_SRV_REVENUE};
+    public static String Expense_accounts[] = {EX_EXPENSE, EX_DEPRECIATION, EX_WAGES};
+
+//////////////////////////////////////////////////
+//https://www.double-entry-bookkeeping.com/retained-earnings/retained-earnings-statement/   
+//http://www.accounting-basics-for-students.com/-recording-retained-earnings-in-the-journal-.html    
+//If you made a profit for the year, the profit and loss account would have a credit balance   
+    public int addRetainEarningProfit(String ref, String type, double amount, String comment) {
+        try {
+            Ledger ledgerTr = accAPI.getLedger();
+            if (ledgerTr == null) {
+                return 0;
+            }
+            TransferRequest transferRequest1 = ledgerTr.createTransferRequest()
+                    .reference(ref)
+                    .type(type)
+                    .account(B_BUSINESS).debit("" + amount, "CAD")
+                    .account(E_RET_EARNING).credit("" + amount, "CAD")
+                    .build();
+
+            transferRequest1.setComment(comment);
+            ledgerTr.commit(transferRequest1);
+        } catch (Exception ex) {
+            logger.info("> addTransferRevenue exception " + ex);
+        }
+        return 0;
+    }
+
+//If, however, the business made a loss for the year, the profit and loss account would have a debit balance.    
+    public int addRetainEarningLoss(String ref, String type, double amount, String comment) {
+        try {
+            Ledger ledgerTr = accAPI.getLedger();
+            if (ledgerTr == null) {
+                return 0;
+            }
+            TransferRequest transferRequest1 = ledgerTr.createTransferRequest()
+                    .reference(ref)
+                    .type(type)
+                    .account(E_RET_EARNING).debit("" + amount, "CAD")
+                    .account(B_BUSINESS).credit("" + amount, "CAD")
+                    .build();
+
+            transferRequest1.setComment(comment);
+            ledgerTr.commit(transferRequest1);
+        } catch (Exception ex) {
+            logger.info("> addTransferRevenue exception " + ex);
+        }
+        return 0;
+    }
 
 //https://accounting-simplified.com/financial/double-entry-accounting/    
+//////////////////////////////////////////////////////////////////
+    public int addTransferRevenue(String ref, String type, double amount, String comment) {
+        try {
+            Ledger ledgerTr = accAPI.getLedger();
+            if (ledgerTr == null) {
+                return 0;
+            }
+            TransferRequest transferRequest1 = ledgerTr.createTransferRequest()
+                    .reference(ref)
+                    .type(type)
+                    .account(A_CASH).debit("" + amount, "CAD")
+                    .account(R_REVENUE).credit("" + amount, "CAD")
+                    .build();
+
+            transferRequest1.setComment(comment);
+            ledgerTr.commit(transferRequest1);
+        } catch (Exception ex) {
+            logger.info("> addTransferRevenue exception " + ex);
+        }
+        return 0;
+    }
+
+    //Interest received on bank deposit account
+    public int addTransferIncome(String ref, String type, double amount, String comment) {
+        try {
+            Ledger ledgerTr = accAPI.getLedger();
+            if (ledgerTr == null) {
+                return 0;
+            }
+            TransferRequest transferRequest1 = ledgerTr.createTransferRequest()
+                    .reference(ref)
+                    .type(type)
+                    .account(A_CASH).debit("" + amount, "CAD")
+                    .account(R_F_INCOME).credit("" + amount, "CAD")
+                    .build();
+
+            transferRequest1.setComment(comment);
+            ledgerTr.commit(transferRequest1);
+        } catch (Exception ex) {
+            logger.info("> addTransferIncome exception " + ex);
+        }
+        return 0;
+    }
+
+    //
+    ////////////////////////////////////////////////
+    //https://www.double-entry-bookkeeping.com/accounts-receivable/accounts-receivable-journal-entries/
+    //https://www.double-entry-bookkeeping.com/accounts-payable/accounts-payable-journal-entries/
+    public int addAccReceivableRecordSale(String ref, String type, double amount, String comment) {
+        try {
+            Ledger ledgerTr = accAPI.getLedger();
+            if (ledgerTr == null) {
+                return 0;
+            }
+            TransferRequest transferRequest1 = ledgerTr.createTransferRequest()
+                    .reference(ref)
+                    .type(type)
+                    .account(A_ACC_RECEIVABLE).debit("" + amount, "CAD")
+                    .account(R_REVENUE).credit("" + amount, "CAD")
+                    .build();
+
+            transferRequest1.setComment(comment);
+            ledgerTr.commit(transferRequest1);
+        } catch (Exception ex) {
+            logger.info("> addAccReceivableSale exception " + ex);
+        }
+        return 0;
+    }
+
+    public int addAccReceivableCashPayment(String ref, String type, double amount, String comment) {
+        try {
+            Ledger ledgerTr = accAPI.getLedger();
+            if (ledgerTr == null) {
+                return 0;
+            }
+            TransferRequest transferRequest1 = ledgerTr.createTransferRequest()
+                    .reference(ref)
+                    .type(type)
+                    .account(A_CASH).debit("" + amount, "CAD")
+                    .account(A_ACC_RECEIVABLE).credit("" + amount, "CAD")
+                    .build();
+
+            transferRequest1.setComment(comment);
+            ledgerTr.commit(transferRequest1);
+        } catch (Exception ex) {
+            logger.info("> addAccReceivableSale exception " + ex);
+        }
+        return 0;
+    }
+
+    ////////////////////////////////////////////////
+    // Examples of Payroll Journal Entries For Wages
+    public int addTransferPayroll(String ref, String type, double amount, String comment) {
+        try {
+            Ledger ledgerTr = accAPI.getLedger();
+            if (ledgerTr == null) {
+                return 0;
+            }
+            // Debit Utility Expense
+
+            TransferRequest transferRequest1 = ledgerTr.createTransferRequest()
+                    .reference(ref)
+                    .type(type)
+                    .account(EX_WAGES).debit("" + amount, "CAD")
+                    .account(A_CASH).credit("" + amount, "CAD")
+                    .build();
+
+            transferRequest1.setComment(comment);
+            ledgerTr.commit(transferRequest1);
+        } catch (Exception ex) {
+            logger.info("> addTransferPayroll exception " + ex);
+        }
+        return 0;
+    }
+
+    // Payment of utility bills
+    public int addTransferExpense(String ref, String type, double amount, String comment) {
+        try {
+            Ledger ledgerTr = accAPI.getLedger();
+            if (ledgerTr == null) {
+                return 0;
+            }
+            // Debit Utility Expense
+
+            TransferRequest transferRequest1 = ledgerTr.createTransferRequest()
+                    .reference(ref)
+                    .type(type)
+                    .account(EX_EXPENSE).debit("" + amount, "CAD")
+                    .account(A_CASH).credit("" + amount, "CAD")
+                    .build();
+
+            transferRequest1.setComment(comment);
+            ledgerTr.commit(transferRequest1);
+        } catch (Exception ex) {
+            logger.info("> addTransferExpense exception " + ex);
+        }
+        return 0;
+    }
+
+    public static String TYPE_EQUIPMENT_10 = "equipment10";
+    public static String TYPE_EQUIPMENT_20 = "equipment20";
+    public static String TYPE_EQUIPMENT_30 = "equipment30";
+    public static String TYPE_EQUIPMENT_50 = "equipment50";
+    public static String TYPE_EQUIPMENT_100 = "equipment100";
+
+    // Purchase of Equipment by cash
+    public int addTransferEquipment(String ref, String type, double amount, String comment) {
+        try {
+            Ledger ledgerTr = accAPI.getLedger();
+            if (ledgerTr == null) {
+                return 0;
+            }
+            // Debit Utility Expense
+
+            TransferRequest transferRequest1 = ledgerTr.createTransferRequest()
+                    .reference(ref)
+                    .type(type)
+                    .account(A_EQUIPMENT).debit("" + amount, "CAD")
+                    .account(A_CASH).credit("" + amount, "CAD")
+                    .build();
+
+            transferRequest1.setComment(comment);
+            ledgerTr.commit(transferRequest1);
+        } catch (Exception ex) {
+            logger.info("> addTransferEquipment exception " + ex);
+        }
+        return 0;
+    }
+
+    // search equipment to find if it still has value for Depreciation 
+    public int addTransferDepreciation(String ref, String type, double amount, String comment) {
+        try {
+            Ledger ledgerTr = accAPI.getLedger();
+            if (ledgerTr == null) {
+                return 0;
+            }
+            // Debit Utility Expense
+
+            TransferRequest transferRequest1 = ledgerTr.createTransferRequest()
+                    .reference(ref)
+                    .type(type)
+                    .account(EX_DEPRECIATION).debit("" + amount, "CAD")
+                    .account(A_EQUIPMENT).credit("" + amount, "CAD")
+                    .build();
+
+            transferRequest1.setComment(comment);
+            ledgerTr.commit(transferRequest1);
+        } catch (Exception ex) {
+            logger.info("> addTransferDepreciation exception " + ex);
+        }
+        return 0;
+    }
+
+//////////////////////////////////////////////////////////////////
     public int createAccountEntry(ServiceAFweb serviceAFWeb) {
 
         if (options == null) {
@@ -131,6 +387,8 @@ public class accAPI {
         stringList = new ArrayList(Arrays.asList(Revenue_accounts));
         itemList.addAll(stringList);
         stringList = new ArrayList(Arrays.asList(Expense_accounts));
+        itemList.addAll(stringList);
+        stringList = new ArrayList(Arrays.asList(Business_accounts));
         itemList.addAll(stringList);
 
         String[] itemsArray = new String[itemList.size()];
@@ -181,6 +439,8 @@ public class accAPI {
             itemList.addAll(stringList);
             stringList = new ArrayList(Arrays.asList(Expense_accounts));
             itemList.addAll(stringList);
+            stringList = new ArrayList(Arrays.asList(Business_accounts));
+            itemList.addAll(stringList);
 
             String[] itemsArray = new String[itemList.size()];
             itemsArray = itemList.toArray(itemsArray);
@@ -204,27 +464,6 @@ public class accAPI {
             return 1;
         } catch (Exception ex) {
             logger.info("> initLedgerEntry exception " + ex);
-        }
-        return 0;
-    }
-
-    public int addTransferCashRev(String ref, String type, double amount, String comment) {
-        try {
-            Ledger ledgerTr = accAPI.getLedger();
-            if (ledgerTr == null) {
-                return 0;
-            }
-            TransferRequest transferRequest1 = ledgerTr.createTransferRequest()
-                    .reference(ref)
-                    .type(type)                 
-                    .account("cash").debit("" + amount, "CAD")
-                    .account("revenues").credit("" + amount, "CAD")
-                    .build();
-
-            transferRequest1.setComment(comment);
-            ledgerTr.commit(transferRequest1);
-        } catch (Exception ex) {
-            logger.info("> addTransfer exception " + ex);
         }
         return 0;
     }
