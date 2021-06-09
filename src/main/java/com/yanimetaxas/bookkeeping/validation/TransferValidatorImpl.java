@@ -72,9 +72,11 @@ public class TransferValidatorImpl implements TransferValidator {
             Account account = accountDao.getAccount(accountRef);
 
             if (account.isOverdrawn()) {
-                // eddy ignore this
-                System.err.println("Insufficient funds for '" + accountRef + "'");
+                if (!accountRef.equals("cash")) {
+                    // eddy ignore this
+                    System.err.println("Insufficient funds for '" + accountRef + "'");
 //                throw new InsufficientFundsException(accountRef);
+                }
             }
         }
     }
